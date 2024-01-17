@@ -25,7 +25,8 @@ def ShowStudent(std_id):
         stdID = student.get('_id')
         if stdID == std_id:
             return jsonify(student)
-
+        else:
+            return jsonify({"error":"Student not found"}),404
 
 
 if __name__ == "__main__":
