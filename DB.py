@@ -46,4 +46,3 @@ def DeleteStudentRecord(id):
     except Exception as e:
         print(e)
 
-all_student = ShowAllStudentRecord()

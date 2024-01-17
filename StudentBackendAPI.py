@@ -12,8 +12,20 @@ def Welcome():
 @app.route("/students")
 def ShowAllStudents():
     students = ShowAllStudentRecord()
+    studentsList = []
     for student in students:
-        return jsonify(student)
+        studentsList.append(student)
+
+    return jsonify({"studentsList": studentsList})
+
+@app.route("/students/<std_id>")
+def ShowStudent(std_id):
+    students = ShowAllStudentRecord()
+    for student in students:
+        stdID = student.get('_id')
+        if stdID == std_id:
+            return jsonify(student)
+
 
 
 if __name__ == "__main__":
