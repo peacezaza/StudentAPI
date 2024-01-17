@@ -24,7 +24,7 @@ def AddStudentRecord(id, name, major, gpa):
     except Exception as e:
         print(e)
 
-def UpdateStudentRecord(oldID, newID, newFullName, newMajor, newGPA):
+def UpdateStudentRecord(oldID, newFullName, newMajor, newGPA):
     db, collection = LoginDB()
     try:
         collection.update_one(
@@ -46,3 +46,9 @@ def DeleteStudentRecord(id):
     except Exception as e:
         print(e)
 
+def FindStudentRecord(id):
+    db, collection = LoginDB()
+    try:
+        return collection.find_one({"_id": id})
+    except Exception as e:
+        print(e)
