@@ -1,8 +1,15 @@
+
+
 from DB import ShowAllStudentRecord, AddStudentRecord, FindStudentRecord, UpdateStudentRecord, DeleteStudentRecord
 from flask import Flask, jsonify, request, render_template
+from flask_basicauth import BasicAuth
+
 
 app = Flask(__name__)
 
+app.config['BASIC_AUTH_USERNAME']='username'
+app.config['BASIC_AUTH_PASSWORD']='password'
+basic_auth = BasicAuth(app)
 
 @app.route("/")
 def Welcome():
@@ -10,6 +17,7 @@ def Welcome():
 
 
 @app.route("/students")
+@basic_auth.required
 def ShowAllStudents():
     students = ShowAllStudentRecord()
     studentsList = []
@@ -20,6 +28,7 @@ def ShowAllStudents():
 
 
 @app.route("/students/<std_id>")
+@basic_auth.required
 def ShowStudent(std_id):
     if FindStudentRecord(std_id) == None:
         return jsonify({"error": "Student not found"}), 404
@@ -28,6 +37,7 @@ def ShowStudent(std_id):
 
 
 @app.route("/students", methods=["POST"])
+@basic_auth.required
 def AddStudent():
     data = request.get_json()
     ID = data.get('_id')
@@ -43,6 +53,7 @@ def AddStudent():
         return jsonify({"error": "Cannot create new student"}, 500)
 
 @app.route("/students/<std_id>", methods=["DELETE"])
+@basic_auth.required
 def DeleteStudent(std_id):
     if FindStudentRecord(std_id) == None:
         return jsonify({"error": "Student not found"}), 404
@@ -52,6 +63,7 @@ def DeleteStudent(std_id):
 
 
 @app.route("/students/<std_id>", methods=["PUT"])
+@basic_auth.required
 def UpdateStudent(std_id):
     data = request.get_json()
     name = data.get('fullname')
